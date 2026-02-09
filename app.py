@@ -64,8 +64,10 @@ def create_app(config_class=Config):
     return app
 
 
+# Create app instance for both gunicorn and direct execution
+app = create_app()
+
 if __name__ == '__main__':
-    app = create_app()
     print("\n" + "="*60)
     print("Student Discussion Forum - AI Enhanced")
     print("="*60)
