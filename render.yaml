@@ -3,11 +3,9 @@ services:
   - type: web
     name: student-forum-backend
     runtime: python
-    repo: https://github.com/samarshri/Temp
     rootDir: backend
     buildCommand: pip install -r requirements.txt
     startCommand: gunicorn app:app
-
     envVars:
       - key: SECRET_KEY
         generateValue: true
@@ -18,11 +16,9 @@ services:
   - type: web
     name: student-forum-frontend
     runtime: static
-    repo: https://github.com/samarshri/Temp
     rootDir: frontend
     buildCommand: npm install && npm run build
     staticPublishPath: ./build
-
     envVars:
       - key: REACT_APP_API_URL
         fromService:
