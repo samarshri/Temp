@@ -14,7 +14,8 @@ profiles_bp = Blueprint('profiles', __name__, url_prefix='/api')
 def get_user_profile(username):
     """Get user profile by username"""
     try:
-        query = "SELECT * FROM users WHERE username = %s"
+        # Use LOWER() for case-insensitive lookup in SQLite/MySQL
+        query = "SELECT * FROM users WHERE LOWER(username) = LOWER(%s)"
         user_data = fetch_one(query, (username,))
         
         if not user_data:
@@ -101,8 +102,8 @@ def follow_user(username):
     try:
         user_id = request.user_id
         
-        # Get target user
-        query = "SELECT id FROM users WHERE username = %s"
+        # Get target user (case-insensitive)
+        query = "SELECT id FROM users WHERE LOWER(username) = LOWER(%s)"
         target_user = fetch_one(query, (username,))
         
         if not target_user:
@@ -133,8 +134,8 @@ def unfollow_user(username):
     try:
         user_id = request.user_id
         
-        # Get target user
-        query = "SELECT id FROM users WHERE username = %s"
+        # Get target user (case-insensitive)
+        query = "SELECT id FROM users WHERE LOWER(username) = LOWER(%s)"
         target_user = fetch_one(query, (username,))
         
         if not target_user:
@@ -166,7 +167,7 @@ def get_followers(username):
         FROM users u
         INNER JOIN user_follows uf ON u.id = uf.follower_id
         INNER JOIN users target ON target.id = uf.following_id
-        WHERE target.username = %s
+        WHERE LOWER(target.username) = LOWER(%s)
         """
         
         followers = fetch_all(query, (username,))
@@ -187,7 +188,7 @@ def get_following(username):
         FROM users u
         INNER JOIN user_follows uf ON u.id = uf.following_id
         INNER JOIN users target ON target.id = uf.follower_id
-        WHERE target.username = %s
+        WHERE LOWER(target.username) = LOWER(%s)
         """
         
         following = fetch_all(query, (username,))
@@ -207,7 +208,7 @@ def check_following(username):
         query = """
         SELECT COUNT(*) as count FROM user_follows uf
         INNER JOIN users u ON u.id = uf.following_id
-        WHERE uf.follower_id = %s AND u.username = %s
+        WHERE uf.follower_id = %s AND LOWER(u.username) = LOWER(%s)
         """
         
         result = fetch_one(query, (user_id, username))

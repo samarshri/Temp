@@ -30,9 +30,9 @@ def register():
     if User.get_by_email(email):
         return jsonify({'error': 'Email already registered'}), 400
     
-    # Check if username exists
+    # Check if username exists (case-insensitive)
     from db import fetch_one
-    check_username = fetch_one("SELECT id FROM users WHERE username = %s", (username,))
+    check_username = fetch_one("SELECT id FROM users WHERE LOWER(username) = LOWER(%s)", (username,))
     if check_username:
         return jsonify({'error': 'Username already taken'}), 400
     
