@@ -9,24 +9,32 @@ const Profile = () => {
     const [loading, setLoading] = useState(true);
     const { user } = useAuth();
     const navigate = useNavigate();
-    const isOwnProfile = user && user.username === username;
+    const isOwnProfile = user && user.username?.toLowerCase() === username?.toLowerCase();
 
     useEffect(() => {
-        if (isOwnProfile) {
-            fetchProfile();
-        } else {
-            setLoading(false);
-        }
-    }, [username, isOwnProfile]);
+        fetchProfile();
+    }, [username]);
 
     const fetchProfile = async () => {
+        setLoading(true);
         try {
             const response = await profilesAPI.getUserProfile(username);
             setProfile(response.data.user);
         } catch (error) {
             console.error('Error fetching profile:', error);
+            setProfile(null);
         }
         setLoading(false);
+    };
+
+    const handleMessage = async () => {
+        if (!profile) return;
+        try {
+            const response = await messagesAPI.startConversation(profile.id);
+            navigate(`/messages/${response.data.conversation_id}`);
+        } catch (error) {
+            console.error('Error starting conversation:', error);
+        }
     };
 
     if (loading) {
@@ -49,12 +57,22 @@ const Profile = () => {
                     <p className="text-muted mb-4 px-3">
                         User profile information is not publicly accessible.
                     </p>
-                    <button
-                        onClick={() => navigate('/')}
-                        className="btn btn-outline-secondary rounded-pill px-4"
-                    >
-                        Back to Home
-                    </button>
+                    <div className="d-flex gap-2 justify-content-center">
+                        <button
+                            onClick={() => navigate('/')}
+                            className="btn btn-outline-secondary rounded-pill px-4"
+                        >
+                            Back to Home
+                        </button>
+                        {profile && user && (
+                            <button
+                                onClick={handleMessage}
+                                className="btn btn-primary rounded-pill px-4"
+                            >
+                                <i className="bi bi-chat-dots me-2"></i> Message
+                            </button>
+                        )}
+                    </div>
                 </div>
             </div>
         );
