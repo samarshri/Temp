@@ -65,17 +65,32 @@ else:
         print(f"⚠️ Fallback to SQLite database: {DB_NAME}")
 
 def init_sqlite_db():
-    """Initialize SQLite database with schema if needed"""
-    if not os.path.exists(DB_NAME):
-        print("Initializing new SQLite database...")
-        conn = sqlite3.connect(DB_NAME)
-        script_path = os.path.join(os.path.dirname(__file__), 'schema_sqlite.sql')
-        if os.path.exists(script_path):
-            with open(script_path, 'r') as f:
-                conn.executescript(f.read())
-            print("Schema applied.")
+    """Initialize SQLite database with schema or apply migrations"""
+    db_exists = os.path.exists(DB_NAME)
+    
+    conn = sqlite3.connect(DB_NAME)
+    try:
+        if not db_exists:
+            print("Initializing new SQLite database...")
+            script_path = os.path.join(os.path.dirname(__file__), 'schema_sqlite.sql')
+            if os.path.exists(script_path):
+                with open(script_path, 'r') as f:
+                    conn.executescript(f.read())
+                print("✅ Schema applied.")
+            else:
+                print("⚠️ schema_sqlite.sql not found!")
         else:
-            print("⚠️ schema_sqlite.sql not found!")
+            # Migration: rename follows to user_follows if needed
+            cursor = conn.cursor()
+            cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='follows'")
+            if cursor.fetchone():
+                print("Running migration: Renaming 'follows' to 'user_follows'...")
+                cursor.execute("ALTER TABLE follows RENAME TO user_follows")
+                conn.commit()
+                print("✅ Migration complete.")
+    except Exception as e:
+        print(f"❌ Database initialization/migration error: {e}")
+    finally:
         conn.close()
 
 if USE_SQLITE:

@@ -114,9 +114,9 @@ def follow_user(username):
         if user_id == target_id:
             return jsonify({'error': 'Cannot follow yourself'}), 400
         
-        # Insert follow
+        # Insert follow (Standardize for SQLite)
         follow_query = """
-        INSERT IGNORE INTO user_follows (follower_id, following_id)
+        INSERT OR IGNORE INTO user_follows (follower_id, following_id)
         VALUES (%s, %s)
         """
         insert(follow_query, (user_id, target_id))
