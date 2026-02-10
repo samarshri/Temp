@@ -15,13 +15,17 @@ const Profile = () => {
         fetchProfile();
     }, [username]);
 
+    const [error, setError] = useState(null);
+
     const fetchProfile = async () => {
         setLoading(true);
+        setError(null);
         try {
             const response = await profilesAPI.getUserProfile(username);
             setProfile(response.data.user);
         } catch (error) {
             console.error('Error fetching profile:', error);
+            setError(error.response?.status === 404 ? 'not_found' : 'server_error');
             setProfile(null);
         }
         setLoading(false);
@@ -47,12 +51,25 @@ const Profile = () => {
         );
     }
 
-    if (!profile) {
+    if (error === 'server_error') {
+        return (
+            <div className="container mt-5 text-center">
+                <div className="alert alert-danger shadow-sm py-4">
+                    <i className="bi bi-exclamation-triangle-fill display-4 mb-3 d-block"></i>
+                    <h4 className="fw-bold">Database Connection Issue</h4>
+                    <p className="mb-0">Please try again in a few minutes or contact support.</p>
+                </div>
+            </div>
+        );
+    }
+
+    if (!profile || error === 'not_found') {
         return (
             <div className="container mt-5">
-                <div className="alert alert-info text-center">
-                    <i className="bi bi-person-exclamation me-2"></i>
-                    User not found or profile does not exist.
+                <div className="alert alert-info text-center py-4 shadow-sm">
+                    <i className="bi bi-person-exclamation display-4 mb-3 d-block"></i>
+                    <h4 className="fw-bold">User Not Found</h4>
+                    <p className="mb-0">The student profile you are looking for does not exist or has been removed.</p>
                 </div>
             </div>
         );

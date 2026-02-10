@@ -129,9 +129,10 @@ class Conversation:
     
     def mark_as_read(self, user_id):
         """Mark all messages as read for a user"""
+        now = datetime.utcnow()
         query = """
         UPDATE conversation_participants
-        SET last_read_at = NOW()
+        SET last_read_at = %s
         WHERE conversation_id = %s AND user_id = %s
         """
-        update(query, (self.id, user_id))
+        update(query, (now, self.id, user_id))

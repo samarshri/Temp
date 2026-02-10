@@ -107,9 +107,12 @@ def get_db_connection():
         connection = None
         try:
             connection = mysql.connector.connect(**DB_CONFIG)
+            if connection.is_connected():
+                print(f"✅ Successfully connected to MySQL database: {DB_CONFIG['database']}")
             yield connection
             connection.commit()
         except Error as e:
+            print(f"❌ MySQL Connection Error: {e}")
             if connection:
                 connection.rollback()
             raise e

@@ -56,26 +56,29 @@ class Message:
         """
         message_id = insert(query, (conversation_id, sender_id, content, message_type, attachment_url))
         
-        # Update conversation timestamp
-        update_conv = "UPDATE conversations SET updated_at = NOW() WHERE id = %s"
-        update(update_conv, (conversation_id,))
+        # Update conversation timestamp using Python side datetime
+        now = datetime.utcnow()
+        update_conv = "UPDATE conversations SET updated_at = %s WHERE id = %s"
+        update(update_conv, (now, conversation_id))
         
         return Message.get_by_id(message_id)
     
     def edit(self, new_content):
         """Edit message content"""
+        now = datetime.utcnow()
         query = """
         UPDATE messages
-        SET content = %s, edited_at = NOW()
+        SET content = %s, edited_at = %s
         WHERE id = %s
         """
-        update(query, (new_content, self.id))
+        update(query, (new_content, now, self.id))
         self.content = new_content
-        self.edited_at = datetime.now()
+        self.edited_at = now
     
     def delete(self):
         """Soft delete message"""
-        query = "UPDATE messages SET is_deleted = TRUE WHERE id = %s"
+        # Use 1 instead of TRUE for maximum SQLite/MySQL compatibility
+        query = "UPDATE messages SET is_deleted = 1 WHERE id = %s"
         update(query, (self.id,))
         self.is_deleted = True
     

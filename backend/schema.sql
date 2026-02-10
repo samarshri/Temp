@@ -10,18 +10,24 @@ DROP TABLE IF EXISTS users;
 -- Users table
 CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(80) UNIQUE NOT NULL,
     name VARCHAR(100) NOT NULL,
     email VARCHAR(120) UNIQUE NOT NULL,
     password_hash VARCHAR(255) NOT NULL,
     role VARCHAR(20) DEFAULT 'student',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    major VARCHAR(100),
+    branch VARCHAR(100),
     year VARCHAR(50),
+    section VARCHAR(10),
     bio TEXT,
-    profile_pic VARCHAR(255),
+    skills TEXT,
+    avatar_url VARCHAR(255),
     linkedin_url VARCHAR(255),
     github_url VARCHAR(255),
-    INDEX idx_email (email)
+    reputation_points INT DEFAULT 0,
+    is_moderator TINYINT(1) DEFAULT 0,
+    INDEX idx_email (email),
+    INDEX idx_username (username)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Posts table
@@ -71,3 +77,45 @@ CREATE TABLE votes (
     UNIQUE KEY unique_post_vote (user_id, post_id),
     UNIQUE KEY unique_comment_vote (user_id, comment_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Conversations
+CREATE TABLE conversations (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE conversation_participants (
+    conversation_id INT NOT NULL,
+    user_id INT NOT NULL,
+    joined_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    last_read_at TIMESTAMP NULL,
+    PRIMARY KEY (conversation_id, user_id),
+    FOREIGN KEY (conversation_id) REFERENCES conversations(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+CREATE TABLE messages (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    conversation_id INT NOT NULL,
+    sender_id INT NOT NULL,
+    content TEXT NOT NULL,
+    message_type VARCHAR(20) DEFAULT 'text',
+    attachment_url VARCHAR(255),
+    is_read TINYINT(1) DEFAULT 0,
+    is_deleted TINYINT(1) DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    edited_at TIMESTAMP NULL,
+    FOREIGN KEY (conversation_id) REFERENCES conversations(id) ON DELETE CASCADE,
+    FOREIGN KEY (sender_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+-- Follows
+CREATE TABLE user_follows (
+    follower_id INT NOT NULL,
+    following_id INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (follower_id, following_id),
+    FOREIGN KEY (follower_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (following_id) REFERENCES users(id) ON DELETE CASCADE
+);

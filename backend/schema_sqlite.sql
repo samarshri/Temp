@@ -135,7 +135,10 @@ CREATE TABLE IF NOT EXISTS messages (
     conversation_id INTEGER NOT NULL,
     sender_id INTEGER NOT NULL,
     content TEXT NOT NULL,
+    message_type VARCHAR(20) DEFAULT 'text',
+    attachment_url VARCHAR(255),
     is_read INTEGER DEFAULT 0,
+    is_deleted INTEGER DEFAULT 0,
     timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
     
     FOREIGN KEY (conversation_id) REFERENCES conversations(id) ON DELETE CASCADE,
@@ -143,11 +146,11 @@ CREATE TABLE IF NOT EXISTS messages (
 );
 
 -- Follows
-CREATE TABLE IF NOT EXISTS follows (
+CREATE TABLE IF NOT EXISTS user_follows (
     follower_id INTEGER NOT NULL,
-    followed_id INTEGER NOT NULL,
+    following_id INTEGER NOT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (follower_id, followed_id),
+    PRIMARY KEY (follower_id, following_id),
     FOREIGN KEY (follower_id) REFERENCES users(id) ON DELETE CASCADE,
-    FOREIGN KEY (followed_id) REFERENCES users(id) ON DELETE CASCADE
+    FOREIGN KEY (following_id) REFERENCES users(id) ON DELETE CASCADE
 );
