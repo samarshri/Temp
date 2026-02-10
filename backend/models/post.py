@@ -47,6 +47,22 @@ class Post:
         """Create Post object from database row dict"""
         if not data:
             return None
+            
+        # Handle SQLite string timestamps
+        timestamp = data.get('timestamp')
+        if isinstance(timestamp, str):
+            try:
+                data['timestamp'] = datetime.strptime(timestamp, '%Y-%m-%d %H:%M:%S')
+            except ValueError:
+                pass
+        
+        edited_at = data.get('edited_at')
+        if isinstance(edited_at, str):
+            try:
+                data['edited_at'] = datetime.strptime(edited_at, '%Y-%m-%d %H:%M:%S')
+            except ValueError:
+                pass
+                
         return Post(**data)
     
     @staticmethod
