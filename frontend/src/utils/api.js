@@ -1,6 +1,12 @@
 import axios from 'axios';
 
 let API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+
+// Render blueprint 'host' property returns domain only, so add protocol
+if (API_BASE_URL && !API_BASE_URL.startsWith('http')) {
+    API_BASE_URL = `https://${API_BASE_URL}`;
+}
+
 if (API_BASE_URL && !API_BASE_URL.endsWith('/api')) {
     API_BASE_URL += '/api';
 }
