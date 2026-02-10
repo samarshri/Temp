@@ -99,11 +99,11 @@ class Post:
     def create(user_id, title, content, subject):
         """Create a new post - compatible with schema_v2"""
         query = """
-        INSERT INTO posts (user_id, title, content, subject, category)
-        VALUES (%s, %s, %s, %s, %s)
+        INSERT INTO posts (user_id, title, content, subject)
+        VALUES (%s, %s, %s, %s)
         """
         # Use subject as category (they're the same in our forum setup)
-        post_id = insert(query, (user_id, title, content, subject, subject))
+        post_id = insert(query, (user_id, title, content, subject))
         return Post.get_by_id(post_id)
     
     def update_content(self, title, content, subject):
