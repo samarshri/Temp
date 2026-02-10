@@ -50,6 +50,12 @@ class User:
     def is_active(self):
         return True
     
+    @is_active.setter
+    def is_active(self, value):
+        # We don't actually store this in this simple model, but we need the setter
+        # so that setattr(self, 'is_active', value) doesn't crash
+        pass
+    
     @property
     def is_anonymous(self):
         return False
