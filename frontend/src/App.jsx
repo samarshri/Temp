@@ -13,54 +13,58 @@ import Profile from './pages/Profile';
 import EditProfile from './pages/EditProfile';
 import PostDetail from './pages/PostDetail';
 import './styles/global.css';
+import Footer from './components/Footer';
 
 
 function App() {
     return (
         <AuthProvider>
             <Router>
-                <div className="App">
+                <div className="d-flex flex-column min-vh-100">
                     <Navbar />
-                    <Routes>
-                        <Route path="/" element={<Home />} />
-                        <Route path="/login" element={<Login />} />
-                        <Route path="/register" element={<Register />} />
-                        <Route path="/profile/:username" element={<Profile />} />
-                        <Route path="/post/:id" element={<PostDetail />} />
-                        <Route
+                    <div className="flex-grow-1">
+                        <Routes>
+                            <Route path="/" element={<Home />} />
+                            <Route path="/login" element={<Login />} />
+                            <Route path="/register" element={<Register />} />
+                            <Route path="/profile/:username" element={<Profile />} />
+                            <Route path="/post/:id" element={<PostDetail />} />
+                            <Route
 
-                            path="/create-post"
-                            element={
-                                <PrivateRoute>
-                                    <CreatePost />
-                                </PrivateRoute>
-                            }
-                        />
-                        <Route
-                            path="/messages"
-                            element={
-                                <PrivateRoute>
-                                    <Messages />
-                                </PrivateRoute>
-                            }
-                        />
-                        <Route
-                            path="/messages/:conversationId"
-                            element={
-                                <PrivateRoute>
-                                    <ChatView />
-                                </PrivateRoute>
-                            }
-                        />
-                        <Route
-                            path="/edit-profile"
-                            element={
-                                <PrivateRoute>
-                                    <EditProfile />
-                                </PrivateRoute>
-                            }
-                        />
-                    </Routes>
+                                path="/create-post"
+                                element={
+                                    <PrivateRoute>
+                                        <CreatePost />
+                                    </PrivateRoute>
+                                }
+                            />
+                            <Route
+                                path="/messages"
+                                element={
+                                    <PrivateRoute>
+                                        <Messages />
+                                    </PrivateRoute>
+                                }
+                            />
+                            <Route
+                                path="/messages/:conversationId"
+                                element={
+                                    <PrivateRoute>
+                                        <ChatView />
+                                    </PrivateRoute>
+                                }
+                            />
+                            <Route
+                                path="/edit-profile"
+                                element={
+                                    <PrivateRoute>
+                                        <EditProfile />
+                                    </PrivateRoute>
+                                }
+                            />
+                        </Routes>
+                    </div>
+                    <Footer />
                 </div>
             </Router>
         </AuthProvider>

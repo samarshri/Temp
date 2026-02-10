@@ -38,7 +38,7 @@ const Home = () => {
             items: [
                 { name: 'Clubs', icon: 'bi-star' },
                 { name: 'Hackathons', icon: 'bi-trophy' },
-                { name: 'General', icon: 'bi-chat-left-text' },
+                { name: 'General Discussion', icon: 'bi-chat-left-text' },
             ]
         }
     ];

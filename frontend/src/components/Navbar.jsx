@@ -18,8 +18,15 @@ const Navbar = () => {
         <nav className="navbar navbar-expand-lg sticky-top">
             <div className="container">
                 <Link className="navbar-brand d-flex align-items-center gap-2" to="/">
-                    <i className="bi bi-mortarboard-fill text-primary display-6"></i>
-                    <span className="text-gradient">StudentHub</span>
+                    <div className="d-flex align-items-center justify-content-center bg-primary text-white rounded-circle" style={{ width: '40px', height: '40px' }}>
+                        <i className="bi bi-mortarboard-fill fs-5"></i>
+                    </div>
+                    <div className="d-flex flex-column">
+                        <span>Student Discussion Forum</span>
+                        <span className="fw-normal text-secondary d-none d-lg-block" style={{ fontSize: '0.75rem', marginTop: '-2px' }}>
+                            A Web-based Platform for Academic Collaboration
+                        </span>
+                    </div>
                 </Link>
 
                 <button

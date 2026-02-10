@@ -13,7 +13,7 @@ const CreatePost = () => {
     const [enhancing, setEnhancing] = useState(false);
     const navigate = useNavigate();
 
-    const subjects = ['Coding', 'Studies', 'General', 'Placement', 'Projects',
+    const subjects = ['Coding', 'Studies', 'General Discussion', 'Placement', 'Projects',
         'Resources', 'Internships', 'Hackathons', 'Clubs'];
 
     const handleChange = (e) => {
@@ -126,7 +126,7 @@ const CreatePost = () => {
                                             ) : (
                                                 <i className="bi bi-magic"></i>
                                             )}
-                                            Enhance with AI
+                                            Improve Content (AI)
                                         </button>
                                     </div>
                                     <textarea
@@ -141,7 +141,11 @@ const CreatePost = () => {
                                         required
                                     ></textarea>
                                     <div className="form-text text-muted">
-                                        Tip: Use "Enhance with AI" to improve clarity and formatting.
+                                        Tip: Use "Improve Content (AI)" to improve clarity and formatting.
+                                    </div>
+                                    <div className="alert alert-light border mt-3 mb-0 py-2 small text-muted d-flex align-items-center">
+                                        <i className="bi bi-info-circle me-2"></i>
+                                        Please maintain respectful and academic discussion.
                                     </div>
                                 </div>
 

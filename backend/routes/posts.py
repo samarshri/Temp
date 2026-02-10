@@ -7,7 +7,7 @@ from db import update as db_update
 
 posts_bp = Blueprint('posts', __name__, url_prefix='/api/posts')
 
-SUBJECTS = ['Coding', 'Studies', 'General', 'Placement', 'Projects',
+SUBJECTS = ['Coding', 'Studies', 'General Discussion', 'Placement', 'Projects',
             'Resources', 'Internships', 'Hackathons', 'Clubs']
 
 
