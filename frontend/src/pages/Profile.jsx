@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { profilesAPI, messagesAPI } from '../utils/api';
+import { profilesAPI } from '../utils/api';
 import { useAuth } from '../context/AuthContext';
 
 const Profile = () => {
     const { username } = useParams();
     const [profile, setProfile] = useState(null);
-    const [isFollowing, setIsFollowing] = useState(false);
     const [loading, setLoading] = useState(true);
     const { user } = useAuth();
     const navigate = useNavigate();
@@ -28,15 +27,6 @@ const Profile = () => {
             console.error('Error fetching profile:', error);
         }
         setLoading(false);
-    };
-
-    const handleMessage = async () => {
-        try {
-            const response = await messagesAPI.startConversation(profile.id);
-            navigate(`/messages/${response.data.conversation_id}`);
-        } catch (error) {
-            console.error('Error starting conversation:', error);
-        }
     };
 
     if (loading) {
@@ -125,22 +115,7 @@ const Profile = () => {
                                         </span>
                                     </div>
 
-                                    {!isOwnProfile && user && (
-                                        <div className="d-flex gap-2">
-                                            <button
-                                                className={`btn ${isFollowing ? 'btn-outline-primary' : 'btn-primary'}`}
-                                                onClick={handleFollow}
-                                            >
-                                                {isFollowing ? 'Following' : 'Follow'}
-                                            </button>
-                                            <button
-                                                className="btn btn-outline-secondary"
-                                                onClick={handleMessage}
-                                            >
-                                                <i className="bi bi-chat-dots me-1"></i> Message
-                                            </button>
-                                        </div>
-                                    )}
+
 
                                     {isOwnProfile && (
                                         <button
