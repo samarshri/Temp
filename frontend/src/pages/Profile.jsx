@@ -13,11 +13,12 @@ const Profile = () => {
     const isOwnProfile = user && user.username === username;
 
     useEffect(() => {
-        fetchProfile();
-        if (user && !isOwnProfile) {
-            checkFollowing();
+        if (isOwnProfile) {
+            fetchProfile();
+        } else {
+            setLoading(false);
         }
-    }, [username]);
+    }, [username, isOwnProfile]);
 
     const fetchProfile = async () => {
         try {
@@ -27,30 +28,6 @@ const Profile = () => {
             console.error('Error fetching profile:', error);
         }
         setLoading(false);
-    };
-
-    const checkFollowing = async () => {
-        try {
-            const response = await profilesAPI.isFollowing(username);
-            setIsFollowing(response.data.is_following);
-        } catch (error) {
-            console.error('Error checking follow status:', error);
-        }
-    };
-
-    const handleFollow = async () => {
-        try {
-            if (isFollowing) {
-                await profilesAPI.unfollowUser(username);
-                setIsFollowing(false);
-            } else {
-                await profilesAPI.followUser(username);
-                setIsFollowing(true);
-            }
-            fetchProfile();
-        } catch (error) {
-            console.error('Error toggling follow:', error);
-        }
     };
 
     const handleMessage = async () => {
@@ -64,7 +41,7 @@ const Profile = () => {
 
     if (loading) {
         return (
-            <div className="container mt-4 text-center">
+            <div className="container mt-5 text-center">
                 <div className="spinner-border text-primary" role="status">
                     <span className="visually-hidden">Loading...</span>
                 </div>
@@ -72,10 +49,23 @@ const Profile = () => {
         );
     }
 
-    if (!profile) {
+    // Treat non-owned profiles as private by design
+    if (!profile || !isOwnProfile) {
         return (
-            <div className="container mt-4">
-                <div className="alert alert-danger">User not found</div>
+            <div className="container mt-5 h-75 d-flex flex-column align-items-center justify-content-center">
+                <div className="text-center py-5">
+                    <i className="bi bi-person-lock text-muted display-1 mb-4"></i>
+                    <h2 className="fw-bold text-dark">Profile Unavailable</h2>
+                    <p className="text-muted mb-4 px-3">
+                        User profile information is not publicly accessible.
+                    </p>
+                    <button
+                        onClick={() => navigate('/')}
+                        className="btn btn-outline-secondary rounded-pill px-4"
+                    >
+                        Back to Home
+                    </button>
+                </div>
             </div>
         );
     }
@@ -85,7 +75,7 @@ const Profile = () => {
             <div className="row">
                 <div className="col-lg-8 mx-auto">
                     {/* Profile Header */}
-                    <div className="card mb-4">
+                    <div className="card border-0 shadow-sm mb-4">
                         <div className="card-body">
                             <div className="d-flex align-items-start">
                                 <div className="me-4">

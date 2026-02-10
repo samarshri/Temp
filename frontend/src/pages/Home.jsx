@@ -192,28 +192,22 @@ const Home = () => {
 
                         <div className="card border-0 shadow-sm mb-4">
                             <div className="card-body">
-                                <h6 className="fw-bold mb-3">About StudentHub</h6>
+                                <h6 className="fw-bold mb-3">About the Forum</h6>
                                 <p className="small text-secondary mb-0">
-                                    The central place for students to discuss coursework, share resources, and connect with peers.
+                                    A central place for students to discuss coursework, share resources, and connect with peers within the academic community.
                                 </p>
                             </div>
                         </div>
 
                         <div className="card border-0 shadow-sm">
                             <div className="card-body">
-                                <h6 className="fw-bold mb-3">Community Rules</h6>
+                                <h6 className="fw-bold mb-3">Guidelines</h6>
                                 <ul className="list-unstyled small text-secondary mb-0 d-flex flex-column gap-2">
-                                    <li><i className="bi bi-check-circle-fill text-success me-2"></i>Be respectful to others</li>
-                                    <li><i className="bi bi-check-circle-fill text-success me-2"></i>No spam or self-promotion</li>
-                                    <li><i className="bi bi-check-circle-fill text-success me-2"></i>Use appropriate tags</li>
+                                    <li><i className="bi bi-person-check text-muted me-2"></i>Maintain academic integrity</li>
+                                    <li><i className="bi bi-chat-left-dots text-muted me-2"></i>Be respectful to peers</li>
+                                    <li><i className="bi bi-tag text-muted me-2"></i>Use appropriate topic filters</li>
                                 </ul>
                             </div>
-                        </div>
-
-                        <div className="mt-4 text-center small text-muted">
-                            &copy; 2025 StudentHub <br />
-                            <Link to="#" className="text-muted text-decoration-none me-2">Privacy</Link>
-                            <Link to="#" className="text-muted text-decoration-none">Terms</Link>
                         </div>
                     </div>
                 </div>
