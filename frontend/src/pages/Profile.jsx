@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { profilesAPI } from '../utils/api';
+import { profilesAPI, messagesAPI } from '../utils/api';
 import { useAuth } from '../context/AuthContext';
 
 const Profile = () => {
