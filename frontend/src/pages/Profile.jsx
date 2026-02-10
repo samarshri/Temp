@@ -47,46 +47,26 @@ const Profile = () => {
         );
     }
 
-    // Treat non-owned profiles as private by design
-    if (!profile || !isOwnProfile) {
+    if (!profile) {
         return (
-            <div className="container mt-5 h-75 d-flex flex-column align-items-center justify-content-center">
-                <div className="text-center py-5">
-                    <i className="bi bi-person-lock text-muted display-1 mb-4"></i>
-                    <h2 className="fw-bold text-dark">Profile Unavailable</h2>
-                    <p className="text-muted mb-4 px-3">
-                        User profile information is not publicly accessible.
-                    </p>
-                    <div className="d-flex gap-2 justify-content-center">
-                        <button
-                            onClick={() => navigate('/')}
-                            className="btn btn-outline-secondary rounded-pill px-4"
-                        >
-                            Back to Home
-                        </button>
-                        {profile && user && (
-                            <button
-                                onClick={handleMessage}
-                                className="btn btn-primary rounded-pill px-4"
-                            >
-                                <i className="bi bi-chat-dots me-2"></i> Message
-                            </button>
-                        )}
-                    </div>
+            <div className="container mt-5">
+                <div className="alert alert-info text-center">
+                    <i className="bi bi-person-exclamation me-2"></i>
+                    User not found or profile does not exist.
                 </div>
             </div>
         );
     }
 
     return (
-        <div className="container mt-4">
+        <div className="container mt-4 pb-5">
             <div className="row">
                 <div className="col-lg-8 mx-auto">
                     {/* Profile Header */}
                     <div className="card border-0 shadow-sm mb-4">
-                        <div className="card-body">
-                            <div className="d-flex align-items-start">
-                                <div className="me-4">
+                        <div className="card-body p-4">
+                            <div className="d-flex align-items-start gap-4">
+                                <div>
                                     {profile.avatar_url ? (
                                         <img
                                             src={profile.avatar_url}
@@ -132,17 +112,25 @@ const Profile = () => {
                                             <i className="bi bi-star-fill text-warning"></i> <strong>{profile.reputation_points}</strong> Rep
                                         </span>
                                     </div>
-
-
-
-                                    {isOwnProfile && (
-                                        <button
-                                            className="btn btn-outline-primary"
-                                            onClick={() => navigate('/edit-profile')}
-                                        >
-                                            <i className="bi bi-pencil me-1"></i> Edit Profile
-                                        </button>
-                                    )}
+                                    <div className="mt-4 d-flex gap-2">
+                                        {isOwnProfile ? (
+                                            <button
+                                                className="btn btn-outline-primary rounded-pill px-4 fw-bold"
+                                                onClick={() => navigate('/edit-profile')}
+                                            >
+                                                <i className="bi bi-pencil me-2"></i> Edit Profile
+                                            </button>
+                                        ) : (
+                                            user && (
+                                                <button
+                                                    className="btn btn-primary rounded-pill px-4 fw-bold"
+                                                    onClick={handleMessage}
+                                                >
+                                                    <i className="bi bi-chat-dots me-2"></i> Message
+                                                </button>
+                                            )
+                                        )}
+                                    </div>
                                 </div>
                             </div>
 
