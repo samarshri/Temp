@@ -33,9 +33,9 @@ const Login = () => {
                     <div className="card border-0 shadow-lg">
                         <div className="card-body p-5">
                             <div className="text-center mb-4">
-                                <i className="bi bi-mortarboard-fill text-primary display-4 mb-3"></i>
-                                <h2 className="fw-bold">Welcome Back</h2>
-                                <p className="text-muted">Login to continue to StudentHub</p>
+                                <i className="bi bi-mortarboard-fill text-primary display-4"></i>
+                                <h2 className="fw-bold mt-2">Welcome Back</h2>
+                                <p className="text-muted">Login to continue to Student Discussion Forum</p>
                             </div>
 
                             {error && (
